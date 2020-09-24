@@ -1,0 +1,297 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+      "title": "Test Backend Smartlink Documentation",
+      "version": "0.0.1",
+      "description": "Test Backend Smartlink Documentation",
+      "contact": {
+        "name": "Ahmad Mirdas",
+        "email": "ahmadmirdas@gmail.com"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:3000/",
+        "description": "Test Backend Smartlink (LOCAL)"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Login",
+        "description": "Login modules"
+      },
+      {
+        "name": "Layanan",
+        "description": "Layanan modules"
+      },
+      {
+        "name": "Transaction",
+        "description": "Transaction modules"
+      }
+    ],
+    "paths": {
+      "/register": {
+        "post": {
+          "summary": "User Register",
+          "tags": ["Login"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "nama": {
+                      "description": "Nama User",
+                      "type": "string"
+                    },
+                    "username": {
+                      "description": "Username User",
+                      "type": "string"
+                    },
+                    "password": {
+                      "description": "User Password Encrypt using crypto-js",
+                      "type": "string"
+                    },
+                    "telepon": {
+                      "description": "No telepon user",
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "nama": "mirdas",
+                    "username": "ahmadmirdas",
+                    "password": "mirdas123",
+                    "telepon": "0895388721311"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "data": {
+                      "code": "200",
+                      "status": "success",
+                      "message": "berhasil terdaftar"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "summary": "User login",
+          "tags": ["Login"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "username": {
+                      "description": "User Username",
+                      "type": "string"
+                    },
+                    "password": {
+                      "description": "User Password",
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "username": "ahmadmirdas",
+                    "password": "mirdas123"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "data": {
+                      "code": "200",
+                      "status": "success",
+                      "data": {
+                        "id": "1",
+                        "nama": "ahmad",
+                        "username": "mirdasahmad",
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6Im1pcmRhc2FobWFkIiwiaWF0IjoxNjAwODc3MDMwLCJleHAiOjE2MDA4ODA2MzB9.keGa91IpWZhOahDrQ2-vo0-FXtIG8A6_2nlgR6Rp56s"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/layanan": {
+        "post": {
+          "summary": "Layanan user",
+          "parameters": [
+            {
+              "in": "header",
+              "name": "x-access-token",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "tags": ["Layanan"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "nama": {
+                      "description": "Nama layanan",
+                      "type": "string"
+                    },
+                    "unit": {
+                      "description": "Unit layanan",
+                      "type": "string"
+                    },
+                    "harga": {
+                      "description": "Harga layanan",
+                      "type": "integer"
+                    }
+                  },
+                  "example": {
+                    "nama": "Cuci Kering",
+                    "unit": "kg",
+                    "harga": 10000
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "data": {
+                      "code": "200",
+                      "status": "success",
+                      "data": {
+                        "id": "1",
+                        "nama": "Cuci Kering",
+                        "unit": "kg",
+                        "harga": 10000,
+                        "user_id": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/transaksi": {
+        "post": {
+          "summary": "Transaksi user",
+          "parameters": [
+            {
+              "in": "header",
+              "name": "x-access-token",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "tags": ["Transaction"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "pelanggan": {
+                      "description": "Nama user",
+                      "type": "string"
+                    },
+                    "layanan_id": {
+                      "description": "Unit layanan (data bisa banyak dan data berupa array)",
+                      "type": "string"
+                    },
+                    "qty": {
+                      "description": "qty dr setiap layanan (data bisa banyak dan data berupa array, banyak array tergantung dari array layanan yang dipilih)",
+                      "type": "string"
+                    },
+                    "diskon_persen": {
+                      "description": "diskon dari total transaksi",
+                      "type": "integer"
+                    }
+                  },
+                  "example": {
+                    "pelanggan": "mirdas",
+                    "layanan_id": [1, 2],
+                    "qty": [5, 2],
+                    "diskon_persen": 10
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "data": {
+                      "code": 200,
+                      "status": "success",
+                      "data": {
+                        "id": 1,
+                        "pelanggan": "mirdas",
+                        "total": 60000,
+                        "diskon_persen": 10,
+                        "diskon_rupiah": 6000,
+                        "tagihan": 54000,
+                        "userId": 1,
+                        "detail": [
+                          {
+                            "id": 1,
+                            "qty": 5,
+                            "layanan": {
+                              "id": 1,
+                              "nama": "Cuci Kering",
+                              "unit": "kg",
+                              "harga": 10000
+                            }
+                          },
+                          {
+                            "id": 2,
+                            "qty": 2,
+                            "layanan": {
+                              "id": 2,
+                              "nama": "Setrika",
+                              "unit": "lembar",
+                              "harga": 5000
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
